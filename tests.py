@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+##!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """IS211 Assignment 7 by Diandra Vega - Unit tests for pig.py"""
 
@@ -13,23 +13,19 @@ class gameTests(unittest.TestCase):
 
 
     def testGameEndsAtMaxScore(self):
-        """Game ends when a player reaches a score of 100"""
+        """Game exits when a player reaches a score of 100"""
         piggame = pig.playPig()
         player_one = pig.Player()
         player_two = pig.Player()
         plyr_one_score = player_one.score + self.max_score
         plyr_two_score = player_two.score + self.max_score
-        status = piggame.status(plyr_one_score, plyr_two_score)
-        self.assertEqual(status, True, "Game did not exit")
+        with self.assertRaises(SystemExit) as cm:
+            piggame.status(plyr_one_score, plyr_two_score)
+        self.assertEqual(cm.exception.code, 1, "Game did not exit")
 
 
-    def testGameScoreDoesNotExceedMax(self):
-        """Docstring"""
-
-
-#        with self.assertRaises(SystemExit) as cm:
-#            pig_game.playGame(player_one, player_two)
-#        self.assertEqual(cm.exception.code, 1)
+#    def testGameScoreDoesNotExceedMax(self):
+#        """Docstring"""#
 
 
 if __name__ == '__main__':

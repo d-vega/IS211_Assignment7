@@ -25,17 +25,29 @@ class playPig(object):
     def status(self, firstscore, secondscore):
         """Check if any player hit a score of 100"""
         if firstscore >= 100:
-            return True
+            print "Player one wins!"
+            sys.exit(1)
         elif secondscore >= 100:
-            return True
+            print "Player two wins!"
+            sys.exit(1)
         else:
             return False
 
 
     def playGame(self, playerone, playertwo):
         """Roll dice"""
-        if self.status(playerone, playertwo) == False:
+        if self.status(playerone, playertwo) == False:#
             roll = "roll the dice!"
             return roll
         else:
             return "game over!"
+
+
+#playerone = Player()
+#playertwo = Player()
+#playgame = playPig()
+#
+#
+#print playgame.status((playerone.score + 100), playertwo.score)
+
+
