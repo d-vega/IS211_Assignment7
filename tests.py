@@ -15,7 +15,7 @@ class gameTests(unittest.TestCase):
 
     def testGameEndsAtMaxScore(self):
         """Game exits when a player reaches a score of 100"""
-        piggame = pig.pig()
+        piggame = pig.Pig()
         player_one = pig.Player()
         player_two = pig.Player()
         plyr_one_score = player_one.score + self.max_score
@@ -27,29 +27,31 @@ class gameTests(unittest.TestCase):
 
     def testTurnEndsAtOne(self):
         """Player turn ends at dice roll of one"""
-        playgame = pig.pig()
-        playerone = pig.Player()
-        result = playgame.rollDice(playerone, 'r')
-        if result[2] == True:
-            self.assertEqual(result[2], True, "Turn did not end at 1")
+        player = pig.Player()
+        result = pig.processTurn(player, 'r')
+        while True:
+            if result == (1, True):
+                self.assertEqual(result, (1, True), "Turn did not end at 1")
+                break
+            else:
+                continue
 
 
     def testPlayerHold(self):
         """Turn ends if player holds"""
-        playgame = pig.pig()
+        playgame = pig.Pig()
         playerone = pig.Player()
         result = playgame.rollDice(playerone, 'h')
-        self.assertEqual(result, ('h', True), "Turn did not end at hold")
+        self.assertEqual(result[0], 'h', "Turn did not end at hold")
 
 
     def testScoreAddsToTotal(self):
         """Turn score adds to total"""
-        playgame = pig.pig()
+        playgame = pig.Pig()
         playerone = pig.Player()
         rolldice = playgame.rollDice(playerone, 'r')
-        if rolldice[2] == True:
-            self.assertEqual(rolldice[1], playerone.score,
-                             "Score did not add to total score")
+        self.assertEqual(rolldice[0], playerone.score,
+                         "Score did not add to total score")
 
 
 if __name__ == '__main__':
