@@ -14,31 +14,36 @@ class Player(object):
         self.score = score
 
 
-    def score(self, points=0):
+    def playerChoice(self):
+        """Roll or hold?"""
+        playerdecision = raw_input("Do you want to roll or hold? [r|h] ")
+
+        while True:
+            if playerdecision is 'r':
+                roll = playerdecision
+                return roll
+                break
+            elif playerdecision is 'h':
+                hold = playerdecision
+                return hold
+                break
+            else:
+                print "Invalid choice."
+                continue
+
+
+    def totalScore(self, points=0):
         """Tally player score"""
         self.score += points
         result = self.score
         return result
 
 
-    def playTurn(self):
-        """Player's turn results"""
-        dice = list(xrange(1, 7))
-        roll = "r"
-        hold = "h"
-        playerdecision = raw_input("Do you want to roll or hold? [r|h] ")
-
-        if playerdecision is roll:
-            diceroll = random.choice(dice)
-            return diceroll
-        elif playerdecision is hold:
-            return playerdecision
-
-
-class playPig(object):
+class pig(object):
     """Play a game of Pig"""
     playerone = Player()
     playertwo = Player()
+
 
     def status(self, firstscore, secondscore):
         """Check if any player hit a score of 100"""
@@ -50,31 +55,42 @@ class playPig(object):
             return False
 
 
-    def rollDice(self):
-        """Play the game"""
-        hold = "h"
+    def addScore(self, playerscore, total):
+        """Add dice roll to turn total"""
+        add_score = playerscore + total
+        return add_score
 
-        while self.status(playerone.score, playertwo.score) == False:
-            playerone_turn = playerone.playTurn()
 
-            if playerone_turn != 1 and playerone_turn is not hold:
-                print playerone_turn
-                continue
-            elif playerone_turn == 1:
-                print playerone_turn
+    def rollDice(self, player, choice=None):
+        """Roll the dice"""
+        dice = list(xrange(1, 7))
+        roll = 'r'
+        hold = 'h'
+        turntotal = 0
+
+        while True:
+            if choice is None:
+                playerchoice = player.playerChoice()
+            else:
+                playerchoice = choice
+
+            if playerchoice is roll:
+                diceroll = random.choice(dice)
+                print "You rolled a {}!".format(diceroll)
+
+                if diceroll != 1:
+                    turntotal += diceroll
+                    continue
+                elif diceroll == 1:
+                    turntotal += diceroll
+                    player.totalScore(self.addScore(player.score, turntotal))
+                    turn_ends = True
+                    result = "You rolled a {}. Your turn now ends. Your total" \
+                             " score is {}. Next player turn starts" \
+                             " now.".format(diceroll, player.score)
+                    return diceroll, player.score, turn_ends
+                    break
+            elif playerchoice is hold:
                 turn_ends = True
-                return playerone_turn, turn_ends
+                return playerchoice, turn_ends
                 break
-            elif playerone_turn is hold:
-                print "Player holds"
-                turn_ends = True
-                return playerone_turn, turn_ends
-                break
-
-
-playerone = Player()
-playertwo = Player()
-playgame = playPig()
-
-
-print playgame.rollDice()
